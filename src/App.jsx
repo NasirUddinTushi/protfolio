@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Menu, X, MessageCircle, Mail, Phone, Search, Megaphone, BarChart3,
@@ -6,7 +5,7 @@ import {
   ChevronRight, Star, Sparkles, Download
 } from "lucide-react";
 
-/** Dark Neon Portfolio (v4) + Resume download */
+/** Dark Neon Portfolio (v4, baseURL-safe) + Resume + Client Logos */
 const THEME = { primary:"#7c3aed", accent:"#06b6d4", surface:"#0b1220", card:"#0f172a" };
 const INFO = {
   name: "MD SHAHADAT HOSEN SAGOR",
@@ -15,13 +14,13 @@ const INFO = {
   wa: "8801724027598",
   waText: "Hi%20Sagor%2C%20I%27m%20interested%20in%20your%20digital%20marketing%20services.%20Can%20we%20talk%3F",
 };
-const RESUME_PATH = "/resume.pdf"; // <-- place your own resume.pdf in public/
+const RESUME_PATH = `${import.meta.env.BASE_URL}resume.pdf`; // place resume.pdf in public/
 
 const LINES = [
-  "Profit‑focused performance marketing.",
+  "Profit-focused performance marketing.",
   "SEO & content that compound.",
   "Funnels + automation that convert.",
-  "Crystal‑clear analytics. Zero fluff.",
+  "Crystal-clear analytics. Zero fluff.",
   "Let’s turn clicks into customers.",
 ];
 
@@ -31,34 +30,87 @@ const SERVICES = [
   { icon: <BarChart3 size={18} />, title: "Analytics & GTM", desc: "GA4 events, pixels, dashboards." },
   { icon: <Target size={18} />, title: "CRO", desc: "Landing pages & A/B tests." },
   { icon: <Mail size={18} />, title: "Email Automation", desc: "Flows, segmentation, nurture." },
-  { icon: <Rocket size={18} />, title: "Product Launch", desc: "Go‑to‑market sprints & promos." },
+  { icon: <Rocket size={18} />, title: "Product Launch", desc: "Go-to-market sprints & promos." },
   { icon: <Layers size={18} />, title: "Content Engine", desc: "Calendars, hooks & repurposing." },
   { icon: <Globe size={18} />, title: "Local SEO / GMB", desc: "Maps ranking & review flywheel." },
   { icon: <Users size={18} />, title: "Social Growth", desc: "Shorts/Reels + influencer ops." },
   { icon: <ClipboardCheck size={18} />, title: "Reporting", desc: "Weekly wins & next actions." },
 ];
 
+/* ---------- Clients (logos already under public/clients) ---------- */
+const CLIENTS = [
+  { logo: `${import.meta.env.BASE_URL}clients/alliance-consultancy-designer-and-digital-marketer-.jpg`, brand: "Alliance Consultancy Designer And Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/belal-travels-content-creator-and-digital-marketer-.jpg`, brand: "Belal Travels Content Creator And Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/fly-abroad-digital-marketer-.jpg`, brand: "Fly Abroad Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/global-study-online-visual-designer-and-digital-marketer-.jpg`, brand: "Global Study Online Visual Designer And Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/g-taj-tours-travels-digital-marketer-.jpg`, brand: "G Taj Tours Travels Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/hello-next-barisalcontent-creator-social-media-marketer.jpg`, brand: "Hello Next Barisalcontent Creator Social Media Marketer" },
+  { logo: `${import.meta.env.BASE_URL}clients/holiday-overseas-digital-marketer-.jpg`, brand: "Holiday Overseas Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/nr-europe-international-content-creator-and-digital-marketer-.jpg`, brand: "Nr Europe International Content Creator And Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/foreign-study-center-ltd-digital-marketer-.jpg`, brand: "Foreign Study Center Ltd Digital Marketer " },
+  { logo: `${import.meta.env.BASE_URL}clients/afreen-tours-travels-limited-visual-designer-and-digital-markter-.jpg`, brand: "Afreen Tours Travels Limited Visual Designer And Digital Markter " }
+];
+
+const TESTIMONIALS = CLIENTS.map((c, i) => ({
+  brand: c.brand,
+  logo: c.logo,
+  text: [
+    "From strategy to execution—fast and reliable. ROAS doubled.",
+    "We finally see clear reporting. CAC down with better funnels.",
+    "SEO + content engine delivered steady, high-quality leads.",
+    "Smart experiments. Real business impact—pipeline velocity is up.",
+  ][i % 4]
+}));
+
+const REVIEWS = CLIENTS.map((c, i) => ({
+  name: c.brand,
+  stars: (i % 5 === 0) ? 4 : 5,
+  text: [
+    "Super responsive, strategy-first. Results came quickly.",
+    "Clear reporting; we finally know what's working.",
+    "Creative + funnel tweaks drove real conversion lift.",
+    "Excellent tracking setup—numbers we can trust.",
+    "Smart experiments and fast iterations."
+  ][i % 5],
+  logo: c.logo
+}));
+
+/* ---------- Projects (uses your exact filenames) ---------- */
 const CASES = [
-  { title: "D2C Scale‑up", mediaType: "image", src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1600&auto=format&fit=crop", summary: "3.6× ROAS in 90 days via UGC creatives & funnel restructure." },
-  { title: "SaaS Pipeline", mediaType: "image", src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1600&auto=format&fit=crop", summary: "1.3k+ MQLs/qtr with SEO clusters + LinkedIn + nurture." },
-  { title: "Local Service", mediaType: "image", src: "https://images.unsplash.com/photo-1485217988980-11786ced9454?q=80&w=1600&auto=format&fit=crop", summary: "Calls up 3.8× from GMB + search ads + landing page CRO." },
-  { title: "Lead Quality Boost", mediaType: "image", src: "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?q=80&w=1600&auto=format&fit=crop", summary: "From 3% to 7.8% MQL→SQL with revamped forms & scoring." },
-  { title: "B2B Webinar Engine", mediaType: "image", src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600&auto=format&fit=crop", summary: "Low‑cost acquisition via topic clusters + retarget + email drips." },
-  { title: "App Install Growth", mediaType: "image", src: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop", summary: "CPI down 38% via creative testing & event optimization." },
-];
+  { title: "Malaysia — Study Visa Campaign",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/malaysia.png`,
+    summary: "Foundation/Diploma/Bachelor — lead gen with landing page conversions." },
 
-const TESTIMONIALS = [
-  { name: "Ayesha Rahman", role: "CEO, HomeKart", text: "From strategy to execution—fast and reliable. ROAS doubled in 2 months." },
-  { name: "Tanvir Hasan", role: "Founder, FitWave", text: "We finally see clear reporting. CAC down 45% with better funnels." },
-  { name: "Sarah Ahmed", role: "Marketing Lead, EduPro", text: "SEO + content engine delivered steady, high‑quality leads." },
-  { name: "Imran Chowdhury", role: "CMO, CloudNest", text: "Smart experiments. Real business impact—pipeline velocity is up." },
-];
+  { title: "Russia — Study in Russia",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/russia.png`,
+    summary: "Admissions without IELTS; SEO + social + lead nurture." },
 
-const REVIEWS = [
-  { name: "Halima", stars: 5, text: "Great creative ideas and quick iterations." },
-  { name: "Shafin", stars: 5, text: "Tracking fixed—now we trust the numbers." },
-  { name: "Rafi", stars: 4, text: "SEO plan was on point. Growth kept compounding." },
-  { name: "Mitu", stars: 5, text: "WhatsApp automation saved our team hours." },
+  { title: "Italy — Visa Services",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/italy.png`,
+    summary: "Tourist, Business & Invitation — CRO + search ads." },
+
+  { title: "United Kingdom — Masters Program",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/uk.png`,
+    summary: "No pre-CAS interview — content creatives + remarketing." },
+
+  { title: "Ireland — Study Visa",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/ireland.png`,
+    summary: "Complete document support — funnel + WhatsApp automation." },
+
+  { title: "Armenia — Work Visa (Skilled)",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/armenia.png`,
+    summary: "Construction/Electrician/Carpenter — local targeting + call leads." },
+
+  { title: "New Zealand — Upcoming Intake",
+    mediaType: "image",
+    src: `${import.meta.env.BASE_URL}projects/newzealand.png`,
+    summary: "Study with spouse — campaign optimization & inbound inquiries." },
 ];
 
 const SKILLS = ["SEO","PPC","Meta Ads","Google Ads","TikTok Ads","Analytics","GA4","GTM","CRO","Funnels","Email","Automation","Content","Local SEO","Copywriting","Landing Pages","A/B Testing","Reporting","Strategy"];
@@ -78,8 +130,10 @@ export default function App(){
   const typed = useTypeDelete(LINES);
   const [open,setOpen] = useState(false);
   const [ti,setTi] = useState(0);
+
   const go = (e,id)=>{ e?.preventDefault(); document.getElementById(id)?.scrollIntoView({behavior:"smooth", block:"start"}); setOpen(false); };
-  useEffect(()=>{ const t=setInterval(()=>setTi(i=>(i+1)%TESTIMONIALS.length),5000); return ()=>clearInterval(t); },[]);
+  useEffect(()=>{ const t=setInterval(()=>setTi(i=>(i+1)%Math.max(TESTIMONIALS.length,1)),5000); return ()=>clearInterval(t); },[]);
+
   const skills1 = useMemo(()=>[...SKILLS,...SKILLS],[]);
   const skills2 = useMemo(()=>[...[...SKILLS].reverse(), ...[...SKILLS].reverse()],[]);
 
@@ -133,11 +187,11 @@ export default function App(){
           <div className="brandG absolute -inset-3 -z-10 blur-2xl opacity-60 rounded-3xl" />
           <div className="bg-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
             <div className="flex items-center gap-4 p-5 border-b border-white/10">
-              <img src="/sagor.jpg" onError={(e)=>{e.currentTarget.src='https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=400&auto=format&fit=crop'}} alt="Portrait of Sagor" className="w-14 h-14 rounded-2xl object-cover" loading="eager" decoding="async"/>
+              <img src={`${import.meta.env.BASE_URL}sagor.jpg`} onError={(e)=>{e.currentTarget.src='https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=400&auto=format&fit=crop'}} alt="Portrait of Sagor" className="w-14 h-14 rounded-2xl object-cover" loading="eager" decoding="async"/>
               <div><div className="font-semibold text-gray-100">{INFO.name}</div><div className="text-xs text-gray-400">Digital Marketing Strategist</div></div>
             </div>
             <div className="p-5 text-sm text-gray-300 grid sm:grid-cols-2 gap-4">
-              <div><div className="font-semibold flex items-center gap-2"><Sparkles size={16} className="text-cyan-300"/> Strengths</div><ul className="list-disc ml-4 mt-1 space-y-1"><li>Full‑funnel strategy</li><li>Creative + copy</li><li>Numbers that matter</li></ul></div>
+              <div><div className="font-semibold flex items-center gap-2"><Sparkles size={16} className="text-cyan-300"/> Strengths</div><ul className="list-disc ml-4 mt-1 space-y-1"><li>Full-funnel strategy</li><li>Creative + copy</li><li>Numbers that matter</li></ul></div>
               <div><div className="font-semibold">Tooling</div><ul className="list-disc ml-4 mt-1 space-y-1"><li>GA4 / GTM</li><li>Meta & Google Ads</li><li>Hotjar / Looker</li></ul></div>
             </div>
           </div>
@@ -167,23 +221,46 @@ export default function App(){
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl sm:text-2xl font-bold">Client love</h2>
           <div className="flex gap-2">
-            <button className="p-2 rounded-full bg-card border border-white/10" onClick={()=>setTi(i=>(i-1+TESTIMONIALS.length)%TESTIMONIALS.length)} aria-label="Previous"><ChevronLeft size={18}/></button>
-            <button className="p-2 rounded-full bg-card border border-white/10" onClick={()=>setTi(i=>(i+1)%TESTIMONIALS.length)} aria-label="Next"><ChevronRight size={18}/></button>
+            <button className="p-2 rounded-full bg-card border border-white/10" onClick={()=>setTi(i=>(i-1+Math.max(TESTIMONIALS.length,1))%Math.max(TESTIMONIALS.length,1))} aria-label="Previous"><ChevronLeft size={18}/></button>
+            <button className="p-2 rounded-full bg-card border border-white/10" onClick={()=>setTi(i=>(i+1)%Math.max(TESTIMONIALS.length,1))} aria-label="Next"><ChevronRight size={18}/></button>
           </div>
         </div>
+
+        {/* logos strip */}
+        <div className="overflow-hidden rounded-2xl border border-white/10 mb-6">
+          <div className="marqueeL gap-6 py-3 px-3 bg-card">
+            {CLIENTS.map((c, i) => (
+              <div key={i} className="h-10 flex items-center opacity-80 hover:opacity-100 transition">
+                <img src={c.logo} alt={c.brand} className="h-10 object-contain" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* slider */}
         <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
           {TESTIMONIALS.map((t,i)=>(
             <article key={i} className={`bg-card rounded-2xl border border-white/10 p-5 shadow-sm ${i===ti? 'ring-1 ring-[var(--a)]':''}`} style={{opacity:i===ti?1:0.85}}>
               <Stars n={5} />
               <p className="text-gray-200 text-sm mt-2">“{t.text}”</p>
-              <div className="mt-3 text-xs text-gray-400">— {t.name}, {t.role}</div>
+              <div className="mt-3 text-xs text-gray-400 flex items-center gap-2">
+                <img src={t.logo} alt={t.brand} className="h-5 object-contain"/>
+                <span>— {t.brand}</span>
+              </div>
             </article>
           ))}
         </div>
+
         <div className="mt-8 grid sm:grid-cols-2 gap-4">
           {REVIEWS.map((r,i)=>(
             <div key={i} className="bg-card rounded-2xl border border-white/10 p-4">
-              <div className="flex items-center justify-between"><div className="font-semibold text-sm">{r.name}</div><Stars n={r.stars}/></div>
+              <div className="flex items-center justify-between">
+                <div className="font-semibold text-sm flex items-center gap-2">
+                  <img src={r.logo} alt={r.name} className="h-5 object-contain"/>
+                  <span>{r.name}</span>
+                </div>
+                <Stars n={r.stars}/>
+              </div>
               <p className="text-sm text-gray-300 mt-2">{r.text}</p>
             </div>
           ))}
@@ -195,12 +272,12 @@ export default function App(){
     <section id="work" className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 py-12 sm:py-16">
       <div className="mb-6"><h2 className="text-xl sm:text-2xl font-bold">Projects</h2><p className="text-gray-400 text-sm">Selected campaigns & experiments.</p></div>
       <div className="grid md:grid-cols-3 gap-5">
-        {CASES.map((p,i)=>(
+        {CASES.map((c,i)=>(
           <article key={i} className="bg-card rounded-3xl overflow-hidden border border-white/10 shadow-xl">
             <div className="relative aspect-[16/10]">
-              <img src={p.src} onError={(e)=>{e.currentTarget.src='https://images.unsplash.com/photo-1487014679447-9f8336841d58?q=80&w=1600&auto=format&fit=crop'}} alt={p.title} className="w-full h-full object-cover"/>
+              <img src={c.src} alt={c.title} className="w-full h-full object-cover"/>
             </div>
-            <div className="p-4"><div className="font-semibold">{p.title}</div><div className="text-sm text-gray-400 mt-1">{p.summary}</div></div>
+            <div className="p-4"><div className="font-semibold">{c.title}</div><div className="text-sm text-gray-400 mt-1">{c.summary}</div></div>
           </article>
         ))}
       </div>
@@ -211,10 +288,10 @@ export default function App(){
       <h2 className="text-xl sm:text-2xl font-bold mb-4">Skills</h2>
       <div className="overflow-hidden rounded-2xl border border-white/10">
         <div className="marqueeL gap-3 py-3 px-3 bg-card border-b border-white/10">
-          {skills1.map((s,i)=> (<span key={`a-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
+          {["SEO","PPC","Meta Ads","Google Ads","TikTok Ads","Analytics","GA4","GTM","CRO","Funnels","Email","Automation","Content","Local SEO","Copywriting","Landing Pages","A/B Testing","Reporting","Strategy"].concat(["SEO","PPC","Meta Ads"]).map((s,i)=> (<span key={`a-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
         </div>
         <div className="marqueeR gap-3 py-3 px-3 bg-card">
-          {skills2.map((s,i)=> (<span key={`b-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
+          {["Strategy","Reporting","A/B Testing","Landing Pages","Copywriting","Local SEO","Content","Automation","Email","Funnels","CRO","GTM","GA4","Analytics","Google Ads","Meta Ads","PPC","SEO"].concat(["Strategy","Reporting"]).map((s,i)=> (<span key={`b-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
         </div>
       </div>
     </section>
@@ -239,4 +316,5 @@ export default function App(){
         </div>
       </div>
     </footer>
-  </div>);}
+  </div>);
+}
