@@ -113,7 +113,7 @@ const CASES = [
     summary: "Study with spouse — campaign optimization & inbound inquiries." },
 ];
 
-const SKILLS = ["SEO","PPC","Meta Ads","Google Ads","TikTok Ads","Analytics","GA4","GTM","CRO","Funnels","Email","Automation","Content","Local SEO","Copywriting","Landing Pages","A/B Testing","Reporting","Strategy"];
+const SKILLS = ["SEO","PPC","Meta Ads","Google Ads","TikTok Ads","Analytics","GA4","GTM","CRO","Funnels","Email","Automation","Content","Local SEO","Copywriting","Landing Pages","A/B Testing","Reporting","Strategy","Zapier","n8n"];
 
 function useTypeDelete(lines, typing=55, hold=1200, erase=35){
   const [text,setText]=useState(""); const [i,setI]=useState(0); const [phase,setPhase]=useState("typing");
@@ -192,7 +192,7 @@ export default function App(){
             </div>
             <div className="p-5 text-sm text-gray-300 grid sm:grid-cols-2 gap-4">
               <div><div className="font-semibold flex items-center gap-2"><Sparkles size={16} className="text-cyan-300"/> Strengths</div><ul className="list-disc ml-4 mt-1 space-y-1"><li>Full-funnel strategy</li><li>Creative + copy</li><li>Numbers that matter</li></ul></div>
-              <div><div className="font-semibold">Tooling</div><ul className="list-disc ml-4 mt-1 space-y-1"><li>GA4 / GTM</li><li>Meta & Google Ads</li><li>Hotjar / Looker</li></ul></div>
+              <div><div className="font-semibold">Tooling</div><ul className="list-disc ml-4 mt-1 space-y-1"><li>GA4 / GTM</li><li>Meta & Google Ads</li><li>Zapier / n8n</li></ul></div>
             </div>
           </div>
         </div>
@@ -288,7 +288,7 @@ export default function App(){
       <h2 className="text-xl sm:text-2xl font-bold mb-4">Skills</h2>
       <div className="overflow-hidden rounded-2xl border border-white/10">
         <div className="marqueeL gap-3 py-3 px-3 bg-card border-b border-white/10">
-          {["SEO","PPC","Meta Ads","Google Ads","TikTok Ads","Analytics","GA4","GTM","CRO","Funnels","Email","Automation","Content","Local SEO","Copywriting","Landing Pages","A/B Testing","Reporting","Strategy"].concat(["SEO","PPC","Meta Ads"]).map((s,i)=> (<span key={`a-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
+          {["SEO","PPC","Meta Ads","Google Ads","TikTok Ads","Analytics","GA4","GTM","CRO","Funnels","Email","Automation","Content","Local SEO","Copywriting","Landing Pages","A/B Testing","Reporting","Strategy","Zapier","n8n"].concat(["SEO","PPC","Meta Ads"]).map((s,i)=> (<span key={`a-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
         </div>
         <div className="marqueeR gap-3 py-3 px-3 bg-card">
           {["Strategy","Reporting","A/B Testing","Landing Pages","Copywriting","Local SEO","Content","Automation","Email","Funnels","CRO","GTM","GA4","Analytics","Google Ads","Meta Ads","PPC","SEO"].concat(["Strategy","Reporting"]).map((s,i)=> (<span key={`b-${i}`} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-sm">{s}</span>))}
