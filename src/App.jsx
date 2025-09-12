@@ -37,6 +37,24 @@ const SERVICES = [
   { icon: <ClipboardCheck size={18} />, title: "Reporting", desc: "Weekly wins & next actions." },
 ];
 
+
+
+
+
+/* ---------- Education ---------- */
+const EDUCATION = [
+  {
+    degree: "Diploma in Computer Science",
+    school: "Infra Polytechnic Institute, Barisal",
+    year: "—"
+  },
+  {
+    degree: "BSc in Computer Science",
+    school: "University of Global Village (UGV), Barisal",
+    year: "—"
+  }
+];
+
 /* ---------- Clients (logos already under public/clients) ---------- */
 const CLIENTS = [
   { logo: `${import.meta.env.BASE_URL}clients/alliance-consultancy-designer-and-digital-marketer-.jpg`, brand: "Alliance Consultancy Designer And Digital Marketer " },
@@ -141,26 +159,35 @@ export default function App(){
     <style>{`:root{--p:${THEME.primary};--a:${THEME.accent}} .bg-card{background:${THEME.card}} .glass{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));backdrop-filter:blur(8px)} .brandG{background-image:linear-gradient(135deg,var(--p),var(--a))} .brandT{background-image:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;background-clip:text;color:transparent} @keyframes blink{0%,100%{opacity:1}50%{opacity:0}} #caret{animation:blink 1s step-end infinite} @keyframes marqueeL{0%{transform:translateX(0)}100%{transform:translateX(-50%)}} @keyframes marqueeR{0%{transform:translateX(0)}100%{transform:translateX(50%)}} .marqueeL{display:flex;width:max-content;animation:marqueeL 22s linear infinite} .marqueeR{display:flex;width:max-content;animation:marqueeR 28s linear infinite}`}</style>
     <div className="pointer-events-none fixed -z-10 inset-0"><div className="absolute -top-28 -left-28 w-[38rem] h-[38rem] rounded-full blur-3xl opacity-30 brandG"/><div className="absolute -bottom-28 -right-28 w-[38rem] h-[38rem] rounded-full blur-3xl opacity-30 brandG"/></div>
 
-    {/* NAV */}
-    <header className="sticky top-0 z-40">
-      <nav className="glass border-b border-white/10 mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between rounded-b-2xl">
-        <a href="#home" className="inline-flex items-center gap-2 font-semibold text-lg"><span className="brandG inline-block w-2.5 h-6 rounded-full"/><span>{INFO.name} — <span className="brandT">Digital Marketer</span></span></a>
-        <div className="hidden md:flex items-center gap-4 text-sm text-gray-200">
-          <a href="#services" onClick={(e)=>go(e,'services')} className="hover:text-white px-2">Services</a>
-          <a href="#work" onClick={(e)=>go(e,'work')} className="hover:text-white px-2">Projects</a>
-          <a href="#testimonials" onClick={(e)=>go(e,'testimonials')} className="hover:text-white px-2">Clients</a>
-          <a href={RESUME_PATH} download className="px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 inline-flex items-center gap-1" aria-label="Download resume PDF"><Download size={16}/> Resume</a>
-          <a href="#contact" onClick={(e)=>go(e,'contact')} className="px-3 py-1.5 rounded-full brandG text-black font-medium">Contact</a>
-        </div>
-        <button className="md:hidden p-2 rounded-lg border border-white/10" onClick={()=>setOpen(true)} aria-label="Open menu"><Menu size={18}/></button>
-      </nav>
-      {open && (<div className="md:hidden glass border-t border-white/10 mx-2 mt-1 rounded-2xl overflow-hidden">
-        {[['services','Services'],['work','Projects'],['testimonials','Clients']].map(([id,label])=> (<a key={id} href={`#${id}`} onClick={(e)=>go(e,id)} className="block px-4 py-3 border-b border-white/10 text-sm">{label}</a>))}
-        <a href={RESUME_PATH} download className="block px-4 py-3 border-b border-white/10 text-sm">Download Resume (PDF)</a>
-        <a href="#contact" onClick={(e)=>go(e,'contact')} className="block px-4 py-3 border-b border-white/10 text-sm">Contact</a>
-        <button className="w-full flex items-center justify-center gap-2 py-3" onClick={()=>setOpen(false)}><X size={16}/> Close</button>
-      </div>)}
-    </header>
+    {/* ---------- NAVBAR ---------- */}
+<header className="sticky top-0 z-40">
+  <nav className="glass border-b border-white/10 mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between rounded-b-2xl">
+    <a href="#home" className="inline-flex items-center gap-2 font-semibold text-lg">
+      <span className="brandG inline-block w-2.5 h-6 rounded-full"/>
+      <span>{INFO.name} — <span className="brandT">Digital Marketer</span></span>
+    </a>
+    <div className="hidden md:flex items-center gap-4 text-sm text-gray-200">
+      <a href="#services" onClick={(e)=>go(e,'services')} className="hover:text-white px-2">Services</a>
+      <a href="#work" onClick={(e)=>go(e,'work')} className="hover:text-white px-2">Projects</a>
+      <a href="#testimonials" onClick={(e)=>go(e,'testimonials')} className="hover:text-white px-2">Clients</a>
+      <a href="#education" onClick={(e)=>go(e,'education')} className="hover:text-white px-2">Education</a>
+      <a href={RESUME_PATH} download className="px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 inline-flex items-center gap-1"><Download size={16}/> Resume</a>
+      <a href="#contact" onClick={(e)=>go(e,'contact')} className="px-3 py-1.5 rounded-full brandG text-black font-medium">Contact</a>
+    </div>
+    <button className="md:hidden p-2 rounded-lg border border-white/10" onClick={()=>setOpen(true)} aria-label="Open menu"><Menu size={18}/></button>
+  </nav>
+  {open && (
+    <div className="md:hidden glass border-t border-white/10 mx-2 mt-1 rounded-2xl overflow-hidden">
+      {[['services','Services'],['work','Projects'],['testimonials','Clients'],['education','Education']].map(([id,label])=> (
+        <a key={id} href={`#${id}`} onClick={(e)=>go(e,id)} className="block px-4 py-3 border-b border-white/10 text-sm">{label}</a>
+      ))}
+      <a href={RESUME_PATH} download className="block px-4 py-3 border-b border-white/10 text-sm">Download Resume (PDF)</a>
+      <a href="#contact" onClick={(e)=>go(e,'contact')} className="block px-4 py-3 border-b border-white/10 text-sm">Contact</a>
+      <button className="w-full flex items-center justify-center gap-2 py-3" onClick={()=>setOpen(false)}><X size={16}/> Close</button>
+    </div>
+  )}
+</header>
+
 
     {/* HERO */}
     <section id="home" className="scroll-mt-24">
@@ -295,6 +322,27 @@ export default function App(){
         </div>
       </div>
     </section>
+
+    {/* ---------- EDUCATION ---------- */}
+<section id="education" className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 pb-12">
+  <h2 className="text-xl sm:text-2xl font-bold mb-6">Education</h2>
+  <div className="grid md:grid-cols-2 gap-6">
+    {EDUCATION.map((ed, i) => (
+      <div key={i} className="p-6 rounded-2xl border border-white/10 bg-card shadow hover:shadow-lg transition">
+        <div className="flex items-start gap-3">
+          <span className="text-[var(--a)] mt-1 text-2xl">🎓</span>
+          <div>
+            <h3 className="font-semibold text-lg">{ed.degree}</h3>
+            <p className="text-gray-300">{ed.school}</p>
+            {ed.year !== "—" && <p className="text-sm text-gray-400">{ed.year}</p>}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+
 
     {/* CTA */}
     <section id="contact" className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 pb-14">
